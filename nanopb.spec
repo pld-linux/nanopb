@@ -1,20 +1,24 @@
 #
 # Conditional build:
+%bcond_without	apidocs		# API documentation
 %bcond_without	static_libs	# static library
 #
 Summary:	Nanopb - Protocol Buffers for Embedded Systems
 Summary(pl.UTF-8):	Nanopb - Protocol Buffers dla systemów wbudowanych
 Name:		nanopb
-Version:	0.4.1
+Version:	0.4.6.4
 Release:	1
 License:	BSD-like
 Group:		Libraries
-#Source0Download: https://github.com/nanopb/nanopb/releases
+#Source0Download: https://github.com/nanopb/nanopb/tags
 Source0:	https://github.com/nanopb/nanopb/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	3e40a0b3af23259be4957fde9d4c4a22
+# Source0-md5:	a80226623867d82d7b0a0a8d4f64fac8
 URL:		https://jpa.kapsi.fi/nanopb/
 BuildRequires:	cmake >= 2.8.12
-BuildRequires:	python >= 1:2.7
+%{?with_apidocs:BuildRequires:	pandoc}
+BuildRequires:	python3 >= 1:3
+BuildRequires:	rpm-build >= 4.6
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -32,6 +36,7 @@ Summary:	Header files for Nanopb library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Nanopb
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	python3-modules
 
 %description devel
 Header files for Nanopb library.
@@ -51,8 +56,22 @@ Static Nanopb library.
 %description static -l pl.UTF-8
 Statyczna biblioteka Nanopb.
 
+%package apidocs
+Summary:	API documentation for Nanopb library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki Nanopb
+Group:		Documentation
+BuildArch:	noarch
+
+%description apidocs
+API documentation for Nanopb library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki Nanopb.
+
 %prep
 %setup -q
+
+%{__sed} -i -e '1s,/usr/bin/env python3,%{__python3},' generator/nanopb_generator.py
 
 %build
 install -d build
@@ -62,6 +81,11 @@ cd build
 	%{!?with_static_libs:-DBUILD_STATIC_LIBS=OFF}
 
 %{__make}
+cd ..
+
+%if %{with apidocs}
+%{__make} -C docs
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -77,17 +101,26 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.txt CHANGELOG.txt LICENSE.txt README.md docs/{*.rst,*.css,logo}
+%doc AUTHORS.txt CHANGELOG.txt LICENSE.txt README.md
 %attr(755,root,root) %{_libdir}/libprotobuf-nanopb.so.0
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/nanopb_generator.py
+%attr(755,root,root) %{_bindir}/protoc-gen-nanopb
 %attr(755,root,root) %{_libdir}/libprotobuf-nanopb.so
 %{_includedir}/pb*.h
+%{py3_sitescriptdir}/proto
 %{_libdir}/cmake/nanopb
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libprotobuf-nanopb.a
+%endif
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
+%doc docs/{logo,*.css,*.html,*.svg}
 %endif
