@@ -1,0 +1,11 @@
+--- nanopb-0.4.7/pb.h.orig	2022-12-11 10:51:56.000000000 +0100
++++ nanopb-0.4.7/pb.h	2023-01-13 19:58:11.797411917 +0100
+@@ -11,7 +11,7 @@
+  *****************************************************************/
+ 
+ /* Enable support for dynamically allocated fields */
+-/* #define PB_ENABLE_MALLOC 1 */
++#define PB_ENABLE_MALLOC 1
+ 
+ /* Define this if your CPU / compiler combination does not support
+  * unaligned memory access to packed structures. Note that packed
