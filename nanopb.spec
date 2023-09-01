@@ -18,6 +18,7 @@ URL:		https://jpa.kapsi.fi/nanopb/
 BuildRequires:	cmake >= 2.8.12
 %{?with_apidocs:BuildRequires:	pandoc}
 BuildRequires:	python3 >= 1:3
+BuildRequires:	python3-modules >= 1:3
 BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	sed >= 4.0
