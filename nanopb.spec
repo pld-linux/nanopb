@@ -40,7 +40,9 @@ Summary:	Header files for Nanopb library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Nanopb
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	python3
 Requires:	python3-modules
+Requires:	python3-protobuf
 
 %description devel
 Header files for Nanopb library.
