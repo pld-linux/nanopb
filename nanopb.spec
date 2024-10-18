@@ -6,16 +6,16 @@
 Summary:	Nanopb - Protocol Buffers for Embedded Systems
 Summary(pl.UTF-8):	Nanopb - Protocol Buffers dla systemów wbudowanych
 Name:		nanopb
-Version:	0.4.7
+Version:	0.4.9
 Release:	1
 License:	BSD-like
 Group:		Libraries
 #Source0Download: https://github.com/nanopb/nanopb/tags
 Source0:	https://github.com/nanopb/nanopb/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	ab1d32b1488a02117e52e8dc4047be1c
+# Source0-md5:	992573109886ea2896abafc46ac949a1
 Patch0:		%{name}-config.patch
 URL:		https://jpa.kapsi.fi/nanopb/
-BuildRequires:	cmake >= 2.8.12
+BuildRequires:	cmake >= 3.14.0
 %{?with_apidocs:BuildRequires:	pandoc}
 BuildRequires:	protobuf
 BuildRequires:	python3 >= 1:3
@@ -79,6 +79,8 @@ Dokumentacja API biblioteki Nanopb.
 %patch0 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env python3,%{__python3},' \
+	extra/script_wrappers/nanopb_generator.py.in \
+	generator/nanopb_generator \
 	generator/nanopb_generator.py \
 	generator/protoc-gen-nanopb
 
@@ -104,8 +106,8 @@ rm -rf $RPM_BUILD_ROOT
 
 # missing from install
 cp -p generator/proto/__init__.py $RPM_BUILD_ROOT%{py3_sitescriptdir}/proto
-%py3_comp $RPM_BUILD_ROOT%{py3_sitescriptdir}/proto
-%py3_ocomp $RPM_BUILD_ROOT%{py3_sitescriptdir}/proto
+%py3_comp $RPM_BUILD_ROOT%{py3_sitescriptdir}/{nanopb,proto}
+%py3_ocomp $RPM_BUILD_ROOT%{py3_sitescriptdir}/{nanopb,proto}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -120,10 +122,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/nanopb_generator
 %attr(755,root,root) %{_bindir}/nanopb_generator.py
 %attr(755,root,root) %{_bindir}/protoc-gen-nanopb
 %attr(755,root,root) %{_libdir}/libprotobuf-nanopb.so
-%{_includedir}/pb*.h
+%{_includedir}/nanopb
+%{py3_sitescriptdir}/nanopb
 %{py3_sitescriptdir}/proto
 %{_libdir}/cmake/nanopb
 
