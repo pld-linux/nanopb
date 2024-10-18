@@ -104,8 +104,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# missing from install
-cp -p generator/proto/__init__.py $RPM_BUILD_ROOT%{py3_sitescriptdir}/proto
 %py3_comp $RPM_BUILD_ROOT%{py3_sitescriptdir}/{nanopb,proto}
 %py3_ocomp $RPM_BUILD_ROOT%{py3_sitescriptdir}/{nanopb,proto}
 
@@ -128,7 +126,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libprotobuf-nanopb.so
 %{_includedir}/nanopb
 %{py3_sitescriptdir}/nanopb
-%{py3_sitescriptdir}/proto
 %{_libdir}/cmake/nanopb
 
 %if %{with static_libs}
