@@ -6,13 +6,13 @@
 Summary:	Nanopb - Protocol Buffers for Embedded Systems
 Summary(pl.UTF-8):	Nanopb - Protocol Buffers dla systemów wbudowanych
 Name:		nanopb
-Version:	0.4.9
+Version:	0.4.9.1
 Release:	1
 License:	BSD-like
 Group:		Libraries
 #Source0Download: https://github.com/nanopb/nanopb/tags
 Source0:	https://github.com/nanopb/nanopb/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	992573109886ea2896abafc46ac949a1
+# Source0-md5:	a974c454f4cb245b3552f3fea233a3fa
 Patch0:		%{name}-config.patch
 URL:		https://jpa.kapsi.fi/nanopb/
 BuildRequires:	cmake >= 3.14.0
@@ -76,7 +76,7 @@ Dokumentacja API biblioteki Nanopb.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env python3,%{__python3},' \
 	extra/script_wrappers/nanopb_generator.py.in \
