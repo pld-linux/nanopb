@@ -7,7 +7,7 @@ Summary:	Nanopb - Protocol Buffers for Embedded Systems
 Summary(pl.UTF-8):	Nanopb - Protocol Buffers dla systemów wbudowanych
 Name:		nanopb
 Version:	0.4.9.1
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Libraries
 #Source0Download: https://github.com/nanopb/nanopb/tags
